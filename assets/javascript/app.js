@@ -48,34 +48,19 @@ database.ref().on("child_added", function(childSnapshot) {
 	var $trainName = $('<td>').html(childSnapshot.val().trainName).appendTo($trainRow);
 	var $destination = $('<td>').html(childSnapshot.val().destination).appendTo($trainRow);
 	var $frequency = $('<td>').html(childSnapshot.val().frequency).appendTo($trainRow);
-	var minutesAway = $('<td>').html(childSnapshot.val().minutesAway).appendTo($trainRow);
-	var nextTrain = $('<td>').html(childSnapshot.val().nextTrain).appendTo($trainRow);
+	var minutesAway = $('<td>').html(minAway).appendTo($trainRow);
 
 
 	 //Set start time for each train
-    var startTime = moment(childSnapshot.val().startTime, 'hh:mm');
+    var startTime = moment(childSnapshot.val().startTime, 'hh:mm').subtract(1,"years");
     console.log("start time: " + startTime);
 
-    //current time to find out difference
-    var currentTime = moment();
-    console.log("current time is: " + moment(currentTime).format("hh:mm"));
-
-    //total time between initial and current
-    var difference = moment().diff(moment(startTime), "minutes");
-    console.log("difference in initial time and current time: " + difference);
-
-    //use modular to figure out time 
-    var frequency = moment(childSnapshot.val().frequency, "minutes");
-    var remainder = difference % frequency;
-    console.log("modular: " + remainder);
-
-    //minutes away time calculation
-    var minutesAway = frequency - remainder;
-    console.log("minutes away: " + minutesAway);
-
-    //calculate the next train arrival time
-    var nextTrain = moment().add(minutesAway, "minutes");
-    console.log("Arrival Time: " + moment(nextTrain).format("hh:mm"));
+   
+    var frequency = childSnapshot.val().frequency;
+	var startTime = moment(childSnapshot.val().startTime, "hh:mm").subtract(1, "years");		
+	var minAway = frequency - (moment().diff(moment(startTime), "minutes") % frequency);
+	var nextTrain = $('<td>').html(moment(moment().add(minAway, "minutes")).format("hh:mm")).appendTo($trainRow);
+	
 		
 	$trainRow.appendTo($trainBody);
 
