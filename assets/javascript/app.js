@@ -10,14 +10,16 @@
 // Create a variable to reference the database
 var database = firebase.database();
 
-//Create variables to hold user input
-var trainNameInput = $('#trainNameInput').val().trim();
-var destinationInput = $('#destinationInput').val().trim();
-var startTimeInput = $('#startTimeInput').val().trim();
-var frequencyInput = $('#frequencyInput').val().trim();
-
 // Capture Button Click
 $("#submitTrain").on("click", function() {
+
+	//Create variables to hold user input
+	var trainNameInput = $('#trainNameInput').val().trim();
+	var destinationInput = $('#destinationInput').val().trim();
+	var startTimeInput = $('#startTimeInput').val().trim();
+	var frequencyInput = $('#frequencyInput').val().trim();
+
+
 	//if the input fields are not empty
 	if( trainNameInput != "" &&
 		destinationInput != "" &&
