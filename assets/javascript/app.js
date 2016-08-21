@@ -48,9 +48,12 @@ database.ref().on("child_added", function(childSnapshot) {
 	var $trainName = $('<td>').html(childSnapshot.val().trainName).appendTo($trainRow);
 	var $destination = $('<td>').html(childSnapshot.val().destination).appendTo($trainRow);
 	var $frequency = $('<td>').html(childSnapshot.val().frequency).appendTo($trainRow);
-	
+	var minutesAway = $('<td>').html(childSnapshot.val().minutesAway).appendTo($trainRow);
+	var nextTrain = $('<td>').html(childSnapshot.val().nextTrain).appendTo($trainRow);
+
+
 	 //Set start time for each train
-    var startTime = moment(startTime, 'hh:mm');
+    var startTime = moment(childSnapshot.val().startTime, 'hh:mm');
     console.log("start time: " + startTime);
 
     //current time to find out difference
@@ -62,16 +65,17 @@ database.ref().on("child_added", function(childSnapshot) {
     console.log("difference in initial time and current time: " + difference);
 
     //use modular to figure out time 
-    //var remainder = difference % frequency;
-    //console.log("modular: " + remainder);
+    var frequency = moment(childSnapshot.val().frequency, "minutes");
+    var remainder = difference % frequency;
+    console.log("modular: " + remainder);
 
     //minutes away time calculation
-    //var minutesAway = frequency - remainder;
-    //console.log("minutes away: " + minutesAway);
+    var minutesAway = frequency - remainder;
+    console.log("minutes away: " + minutesAway);
 
     //calculate the next train arrival time
-    //var nextTrain = moment().add(minutesAway, "minutes");
-    //console.log("Arrival Time: " + moment(nextTrain).format("hh:mm"));
+    var nextTrain = moment().add(minutesAway, "minutes");
+    console.log("Arrival Time: " + moment(nextTrain).format("hh:mm"));
 		
 	$trainRow.appendTo($trainBody);
 
